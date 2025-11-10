@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Practice Buddy - Real Estate Call Training</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .import-info {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .import-info code {
+            background: #e0e7ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #d1d5db;
+        }
+
+        .btn-purple {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-purple:hover:not(:disabled) {
+            background: #7c3aed;
+        }
+
+        .script-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .script-item {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .script-item:hover {
+            background: #f9fafb;
+            border-color: #667eea;
+        }
+
+        .script-question {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .script-response {
+            color: #6b7280;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .stats-bar span {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .practice-card {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-section {
+            margin-bottom: 30px;
+        }
+
+        .question-label {
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.3;
+        }
+
+        .reveal-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .reveal-section p {
+            color: #6b7280;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .reveal-btn {
+            background: #667eea;
+            color: white;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+        }
+
+        .reveal-btn:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .response-box {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .response-label {
+            color: #059669;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .response-text {
+            color: #1f2937;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .navigation button {
+            flex: 1;
+        }
+
+        .navigation .shuffle-btn {
+            flex: 0 0 auto;
+            padding: 12px 20px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .exit-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 8px 16px;
+        }
+
+        .exit-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .question-text {
+                font-size: 1.4rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📞 Script Practice Buddy</h1>
+            <p>Master your real estate calling scripts</p>
+        </div>
+
+        <!-- Setup View -->
+        <div id="setupView">
+            <!-- Import Section -->
+            <div class="card">
+                <h2>Import Scripts</h2>
+                <div class="import-info">
+                    <p style="margin-bottom: 10px;"><strong>Format:</strong> Each script should be on separate lines like this:</p>
+                    <p><code>Q: Your question here</code></p>
+                    <p><code>R: Your response here</code></p>
+                </div>
+                <textarea id="importText" rows="10" placeholder="Q: Why should I list with you?&#10;R: I'm a dual-licensed broker and loan officer...&#10;&#10;Q: What's your commission?&#10;R: My rate is competitive, but here's what makes me different..."></textarea>
+                <button class="btn-primary" onclick="importScripts()">Import Scripts</button>
+            </div>
+
+            <!-- Script Library -->
+            <div class="card">
+                <div class="header-actions">
+                    <h2>Your Scripts (<span id="scriptCount">0</span>)</h2>
+                    <button class="btn-success" onclick="startPractice()" id="startPracticeBtn">Start Practice</button>
+                </div>
+                <div class="script-list" id="scriptList"></div>
+            </div>
+        </div>
+
+        <!-- Practice View -->
+        <div id="practiceView" class="hidden">
+            <!-- Stats Bar -->
+            <div class="card">
+                <div class="stats-bar">
+                    <span>Progress: <strong><span id="practiced">0</span> / <span id="total">0</span></strong> practiced</span>
+                    <span>Card <strong><span id="current">1</span> of <span id="totalCards">0</span></strong></span>
+                    <button class="exit-btn" onclick="exitPractice()">Exit Practice</button>
+                </div>
+            </div>
+
+            <!-- Practice Card -->
+            <div class="card practice-card">
+                <div class="question-section">
+                    <div class="question-label">QUESTION</div>
+                    <div class="question-text" id="practiceQuestion"></div>
+                </div>
+
+                <div id="revealSection" class="reveal-section">
+                    <p>Think about your response, then reveal the script</p>
+                    <button class="reveal-btn" onclick="revealResponse()">Reveal Response</button>
+                </div>
+
+                <div id="responseSection" class="hidden">
+                    <div class="response-box">
+                        <div class="response-label">SUGGESTED RESPONSE</div>
+                        <div class="response-text" id="practiceResponse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="card">
+                <div class="navigation">
+                    <button class="btn-secondary" onclick="previousCard()" id="prevBtn">← Previous</button>
+                    <button class="btn-purple shuffle-btn" onclick="shuffleScripts()">🔀 Shuffle</button>
+                    <button class="btn-secondary" onclick="nextCard()" id="nextBtn">Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample scripts
+        const sampleScripts = [
+            {
+                question: "Why should I list with you instead of another agent?",
+                response: "Great question. I'm actually both a licensed real estate broker AND a mortgage loan officer. That means I control both sides of your transaction. When financing falls through, it's usually the #1 reason deals fail. With me, I can pre-qualify buyers properly and solve financing issues before they kill your deal. I've closed over 1,000 transactions worth $100M+ specifically because I can handle what other agents can't."
+            },
+            {
+                question: "What's your commission rate?",
+                response: "My standard rate is competitive with the market, but here's what makes me different - I don't just list your property, I also handle the financing side. That means fewer deals falling apart, faster closings, and I can work with buyers other agents would turn away. Many of my sellers actually save money because deals close instead of falling through and costing them months of carrying costs."
+            },
+            {
+                question: "How long will it take to sell my house?",
+                response: "Based on your area and property condition, typical market time is 30-60 days. But here's where my dual license helps you - I can pre-screen buyers for actual financing capability, not just pre-approval letters. That cuts down on wasted time with unqualified buyers. I can also offer creative financing options that expand your buyer pool. In my 20+ years and 1,000+ closings, properties I list tend to close faster because financing doesn't fall through."
+            }
+        ];
+
+        let scripts = [];
+        let currentIndex = 0;
+        let practiced = 0;
+        let showingResponse = false;
+
+        // Initialize with sample scripts
+        function init() {
+            scripts = [...sampleScripts];
+            saveToLocalStorage();
+            updateScriptList();
+        }
+
+        // Local storage functions
+        function saveToLocalStorage() {
+            localStorage.setItem('practiceScripts', JSON.stringify(scripts));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('practiceScripts');
+            if (saved) {
+                scripts = JSON.parse(saved);
+            } else {
+                scripts = [...sampleScripts];
+            }
+        }
+
+        // Import scripts
+        function importScripts() {
+            const text = document.getElementById('importText').value.trim();
+            if (!text) {
+                alert('Please enter some scripts to import.');
+                return;
+            }
+
+            const lines = text.split('\n');
+            const newScripts = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.startsWith('Q:')) {
+                    const question = line.substring(2).trim();
+                    let response = '';
+                    
+                    if (i + 1 < lines.length && lines[i + 1].trim().startsWith('R:')) {
+                        response = lines[i + 1].trim().substring(2).trim();
+                        i++;
+                    }
+                    
+                    if (question && response) {
+                        newScripts.push({ question, response });
+                    }
+                }
+            }
+            
+            if (newScripts.length > 0) {
+                scripts = [...scripts, ...newScripts];
+                saveToLocalStorage();
+                updateScriptList();
+                document.getElementById('importText').value = '';
+                alert(`Successfully imported ${newScripts.length} script(s)!`);
+            } else {
+                alert('No valid scripts found. Make sure to use the format:\nQ: Your question\nR: Your response');
+            }
+        }
+
+        // Update script list display
+        function updateScriptList() {
+            const listEl = document.getElementById('scriptList');
+            const countEl = document.getElementById('scriptCount');
+            
+            countEl.textContent = scripts.length;
+            
+            if (scripts.length === 0) {
+                listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No scripts yet. Import some to get started!</p>';
+                document.getElementById('startPracticeBtn').disabled = true;
+                return;
+            }
+
+            document.getElementById('startPracticeBtn').disabled = false;
+            
+            listEl.innerHTML = scripts.map((script, index) => `
+                <div class="script-item">
+                    <div class="script-question">
+                        <span>${script.question}</span>
+                        <button class="delete-btn" onclick="deleteScript(${index})">✕</button>
+                    </div>
+                    <div class="script-response">${script.response}</div>
+                </div>
+            `).join('');
+        }
+
+        // Delete a script
+        function deleteScript(index) {
+            if (confirm('Are you sure you want to delete this script?')) {
+                scripts.splice(index, 1);
+                saveToLocalStorage();
+                updateScriptList();
+            }
+        }
+
+        // Start practice mode
+        function startPractice() {
+            if (scripts.length === 0) return;
+            
+            currentIndex = 0;
+            practiced = 0;
+            showingResponse = false;
+            
+            document.getElementById('setupView').classList.add('hidden');
+            document.getElementById('practiceView').classList.remove('hidden');
+            
+            updatePracticeCard();
+        }
+
+        // Exit practice mode
+        function exitPractice() {
+            document.getElementById('practiceView').classList.add('hidden');
+            document.getElementById('setupView').classList.remove('hidden');
+            practiced = 0;
+        }
+
+        // Update practice card display
+        function updatePracticeCard() {
+            if (scripts.length === 0) return;
+            
+            const script = scripts[currentIndex];
+            
+            document.getElementById('practiceQuestion').textContent = script.question;
+            document.getElementById('practiceResponse').textContent = script.response;
+            document.getElementById('current').textContent = currentIndex + 1;
+            document.getElementById('totalCards').textContent = scripts.length;
+            document.getElementById('practiced').textContent = practiced;
+            document.getElementById('total').textContent = scripts.length;
+            
+            // Hide response
+            document.getElementById('revealSection').classList.remove('hidden');
+            document.getElementById('responseSection').classList.add('hidden');
+            showingResponse = false;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === scripts.length - 1;
+        }
+
+        // Reveal response
+        function revealResponse() {
+            if (!showingResponse) {
+                practiced++;
+                document.getElementById('practiced').textContent = practiced;
+                showingResponse = true;
+            }
+            
+            document.getElementById('revealSection').classList.add('hidden');
+            document.getElementById('responseSection').classList.remove('hidden');
+        }
+
+        // Navigation
+        function nextCard() {
+            if (currentIndex < scripts.length - 1) {
+                currentIndex++;
+                updatePracticeCard();
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updatePracticeCard();
+            }
+        }
+
+        function shuffleScripts() {
+            for (let i = scripts.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [scripts[i], scripts[j]] = [scripts[j], scripts[i]];
+            }
+            currentIndex = 0;
+            practiced = 0;
+            updatePracticeCard();
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            loadFromLocalStorage();
+            updateScriptList();
+        };
+    </script>
+
+<!-- === Shared preload support injected on 2025-11-10 === -->
+<script>
+(async function() {
+  // If the app already has logic, we won't clobber; we just provide a helper.
+  const hasSharedFlag = localStorage.getItem("spb_shared_preloaded");
+  try {
+    // Try to fetch a scripts.json next to index.html (works on GitHub Pages, Netlify, Dropbox direct links)
+    const res = await fetch("scripts.json", { cache: "no-store" });
+    if (res.ok) {
+      const shared = await res.json();
+      if (!hasSharedFlag && Array.isArray(shared) && shared.length) {
+        localStorage.setItem("script_practice_buddy_library", JSON.stringify(shared));
+        localStorage.setItem("spb_shared_preloaded", "1");
+        console.log("Loaded shared scripts.json into localStorage");
+      }
+    } else {
+      console.log("No scripts.json found (status " + res.status + "). Using embedded defaults.");
+    }
+  } catch(e) {
+    console.log("scripts.json fetch failed; using embedded defaults.", e);
+  }
+
+  // Fallback: seed with embedded starter data on first visit only
+  try {
+    if (!hasSharedFlag && !localStorage.getItem("script_practice_buddy_library")) {
+      const embedded = [{"question": "Why should I list with you?", "answer": "I'm both a licensed real estate broker and a mortgage loan officer—one team, one plan, zero finger‑pointing."}, {"question": "How fast can we go from showing to closing?", "answer": "With financing pre‑matched and marketing pre‑built, we compress the dead space between interest and offer."}, {"question": "What if my listing already expired?", "answer": "We relaunch with a financing‑first plan and buyer matching. Fresh eyes, stronger positioning, better traction."}];
+      localStorage.setItem("script_practice_buddy_library", JSON.stringify(embedded));
+      localStorage.setItem("spb_shared_preloaded", "1");
+      console.log("Seeded with embedded starter dataset.");
+    }
+  } catch(e) {
+    console.warn("Could not seed localStorage.", e);
+  }
+})();
+</script>
+</body>
+</html>
